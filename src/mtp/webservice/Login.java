@@ -17,10 +17,13 @@ public class Login {
     // Query parameters are parameters: http://localhost/<appln-folder-name>/login/dologin?username=abc&password=xyz
     public String doLogin(@QueryParam("username") String uname, @QueryParam("password") String pwd){
         String response = "";
+             
         if(checkCredentials(uname, pwd)){
-            response = Utility.constructJSON("login",true);
+        	BaseJsonResponse obj = new BaseJsonResponse("login",true);
+            response = obj.toJson();
         }else{
-            response = Utility.constructJSON("login", false, "Incorrect Email or Password");
+        	BaseJsonResponse obj = new BaseJsonResponse("login", false, "B³êdny adres e-mail lub has³o");
+            response = obj.toJson();
         }
     return response;        
     }

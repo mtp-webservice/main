@@ -22,13 +22,17 @@ public class Register {
         //System.out.println("Inside doLogin "+uname+"  "+pwd);
         int retCode = registerUser(name, uname, pwd);
         if(retCode == 0){
-            response = Utility.constructJSON("register",true);
+        	BaseJsonResponse obj = new BaseJsonResponse("register",true);
+            response = obj.toJson();
         }else if(retCode == 1){
-            response = Utility.constructJSON("register",false, "You are already registered");
+        	BaseJsonResponse obj = new BaseJsonResponse("register",false, "You are already registered");
+            response = obj.toJson();
         }else if(retCode == 2){
-            response = Utility.constructJSON("register",false, "Special Characters are not allowed in Username and Password");
+        	BaseJsonResponse obj = new BaseJsonResponse("register",false, "Special Characters are not allowed in Username and Password");
+            response = obj.toJson();
         }else if(retCode == 3){
-            response = Utility.constructJSON("register",false, "Error occured");
+        	BaseJsonResponse obj = new BaseJsonResponse("register",false, "Error occured");
+            response = obj.toJson();
         }
         return response;
  
