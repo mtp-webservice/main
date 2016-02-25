@@ -6,4 +6,9 @@ public class Constants {
     public static String dbUrl = "jdbc:mysql://localhost:3306/"+dbName;
     public static String dbUser = "root";
 	public static String dbPwd = "1234";
+	
+	public static String dbClassPg = "org.postgresql.Driver";
+    public static String dbUserPg = "postgres";
+    public static String dbUrlPg = "jdbc:postgresql://localhost:5432/"+dbName;
+    
 }
