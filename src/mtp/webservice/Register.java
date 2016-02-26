@@ -43,7 +43,7 @@ public class Register {
         int result = 3;
         if(Utility.isNotNull(uname) && Utility.isNotNull(pwd)){
             try {
-                if(DBConnection.insertUser(name, uname, pwd)){
+                if(DBConnection.insertUser(name, uname, pwd,Constants.dbType)){
                     System.out.println("RegisterUSer if");
                     result = 0;
                 }

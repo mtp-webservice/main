@@ -6,8 +6,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
  
 public class DBConnection {
+	
+	
     /**
      * Method to create DB Connection
      * 
@@ -16,10 +22,24 @@ public class DBConnection {
      */
     @SuppressWarnings("finally")
     public static Connection createConnection() throws Exception {
+    	
+    	String dbType = Constants.dbType;
+    	
         Connection con = null;
         try {
-            Class.forName(Constants.dbClass);
-            con = DriverManager.getConnection(Constants.dbUrl, Constants.dbUser, Constants.dbPwd);
+        	
+        	if(dbType.equals("MYSQL"))
+        	{
+                Class.forName(Constants.dbClass);
+                con = DriverManager.getConnection(Constants.dbUrl, Constants.dbUser, Constants.dbPwd);
+        	}
+        	else if(dbType.equals("POSTGRES"))
+        	{
+                Class.forName(Constants.dbClassPg);
+                con = DriverManager.getConnection(Constants.dbUrlPg, Constants.dbUserPg, Constants.dbPwd);
+        	}
+
+        
         } catch (Exception e) {
             throw e;
         } finally {
@@ -45,7 +65,20 @@ public class DBConnection {
                 e.printStackTrace();
             }
             Statement stmt = dbConn.createStatement();
-            String query = "SELECT * FROM user WHERE username = '" + uname
+            
+            String dbType = Constants.dbType;
+            String beginQuery = "";
+            
+            if(dbType.equals("MYSQL"))
+            {
+            	beginQuery = "SELECT * FROM user ";
+            }
+            else if(dbType.equals("POSTGRES"))
+            {
+            	beginQuery = "SELECT * FROM public.user ";
+            }
+            
+            String query = beginQuery+ "WHERE username = '" + uname
                     + "' AND password=" + "'" + pwd + "'";
             //System.out.println(query);
             ResultSet rs = stmt.executeQuery(query);
@@ -78,7 +111,7 @@ public class DBConnection {
      * @throws SQLException
      * @throws Exception
      */
-    public static boolean insertUser(String name, String uname, String pwd) throws SQLException, Exception {
+    public static boolean insertUser(String name, String uname, String pwd, String type) throws SQLException, Exception {
         boolean insertStatus = false;
         Connection dbConn = null;
         try {
@@ -89,9 +122,21 @@ public class DBConnection {
                 e.printStackTrace();
             }
             Statement stmt = dbConn.createStatement();
-            String query = "INSERT into user(name, username, password) values('"+name+ "',"+"'"
+            
+            String beginQuery="";
+   
+			if(type.equals("POSTGRES"))
+			{
+				beginQuery = "INSERT into public.user";
+			}
+			else
+			{
+				beginQuery = "INSERT into user";
+			}
+                         
+            String query = beginQuery+"(name, username, password) values('"+name+ "',"+"'"
                     + uname + "','" + pwd + "')";
-            //System.out.println(query);
+            System.out.println(query);
             int records = stmt.executeUpdate(query);
             //System.out.println(records);
             //When record is successfully inserted
