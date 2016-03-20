@@ -81,5 +81,65 @@ public class Meals {
 		return gson.toJson(foodList);
 	}
 	
+	
+	
+	@GET
+	@Path("/removeitem")
+	@Produces(MediaType.APPLICATION_JSON) 
+	public String removeItem(@QueryParam("id") int id) throws SQLException{
+	{
+		Connection dbConn = null;
+		Gson gson = new Gson();
+		String response = "{\"result\": \"false\"}";
+		
+        try {
+            try {
+                dbConn = DBConnection.createConnection();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            Statement stmt = dbConn.createStatement();
+            
+            String dbType = Constants.dbType;
+            String beginQuery = "";
+            
+            if(dbType.equals("MYSQL"))
+            {
+            	beginQuery = "DELETE FROM `meals` ";
+            }
+            else if(dbType.equals("POSTGRES"))
+            {
+            	beginQuery = "DELETE FROM public.meals ";
+            }
+            
+            String query = beginQuery+ " where id = " + id;
+            
+            int result = stmt.executeUpdate(query);
+            if (result > 0)
+            	response = "{\"result\": \"true\"}";
+            	return gson.toJson(response);
+            
+            
+        } catch (SQLException sqle) {
+            throw sqle;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            if (dbConn != null) {
+                dbConn.close();
+            }
+            throw e;
+        } finally {
+            if (dbConn != null) {
+                dbConn.close();
+            } 
+        }
+	}
+	
+	}}
+			
+	
+	
 
-}
+
+	
