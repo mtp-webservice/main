@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
 
-import model.Food;
+import model.Product;
 
 @Path("/meals")
 public class Meals {
@@ -25,7 +25,7 @@ public class Meals {
 	public String getMeals(@QueryParam("date") String date) throws SQLException{
 		
 		Connection dbConn = null;
-		ArrayList<Food> foodList = new ArrayList<Food>();
+		ArrayList<Product> foodList = new ArrayList<Product>();
 		Gson gson = new Gson();
 		
         try {
@@ -54,12 +54,14 @@ public class Meals {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
             	
-            	Food food = new Food();
+            	Product food = new Product();
             	food.setId(rs.getInt("id"));
             	food.setName(rs.getString("name"));
             	food.setMeal(rs.getInt("meal"));
             	food.setAmount(rs.getInt("amount"));
             	food.setUnit(rs.getString("unit"));
+            	food.setCalories(rs.getInt("calories"));
+            	
             	foodList.add(food);
             }
             
@@ -81,6 +83,65 @@ public class Meals {
 		return gson.toJson(foodList);
 	}
 	
+	
+	@GET
+	@Path("/additem")
+	@Produces(MediaType.APPLICATION_JSON) 
+	public String addItem(@QueryParam("mealId") int mealId, @QueryParam("productId") int productId,
+			@QueryParam("amount") float amount, @QueryParam("calories") float calories,
+			@QueryParam("fat") float fat, @QueryParam("carbs") float carbs,
+			@QueryParam("proteins") float proteins, @QueryParam("date") String date,
+			@QueryParam("unit") String unit, @QueryParam("productName") String productName) throws SQLException{
+		
+		Connection dbConn = null;
+		Gson gson = new Gson();
+		String response = "{\"result\": \"false\"}";
+		
+        try {
+            try {
+                dbConn = DBConnection.createConnection();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            Statement stmt = dbConn.createStatement();
+            
+            String dbType = Constants.dbType;
+            String beginQuery = "";
+            
+            if(dbType.equals("MYSQL"))
+            {
+            	beginQuery = "insert into meals(meal,name,productId,proteins,carbs,fat,calories,amount,unit,date) ";
+            }
+            else if(dbType.equals("POSTGRES"))
+            {
+            	beginQuery = "INSERT INTO public.meals ";
+            }
+            
+            String query = beginQuery+ " values("+mealId+",'"+productName+"',"+productId
+            		+","+proteins+","+carbs+","+fat+","+calories+","+amount+",'"+unit+"','"+date+"')";
+            
+            int result = stmt.executeUpdate(query);
+            if (result > 0)
+            	response = "{\"result\": \"true\"}";
+            	return gson.toJson(response);
+            
+            
+        } catch (SQLException sqle) {
+            throw sqle;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            if (dbConn != null) {
+                dbConn.close();
+            }
+            throw e;
+        } finally {
+            if (dbConn != null) {
+                dbConn.close();
+            } 
+        }
+		
+	}
 	
 	
 	@GET
