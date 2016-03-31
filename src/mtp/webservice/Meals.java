@@ -13,6 +13,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import model.Product;
 
@@ -81,6 +82,74 @@ public class Meals {
         }
 		
 		return gson.toJson(foodList);
+	}
+	
+	
+	
+	@GET
+	@Path("/getsummary")
+	@Produces(MediaType.APPLICATION_JSON) 
+	public String getSummary(@QueryParam("date") String date) throws SQLException{
+		
+		Connection dbConn = null;
+		float calories = 0,carbs = 0,proteins = 0,fat = 0;
+		
+		Gson gson = new Gson();
+		
+        try {
+            try {
+                dbConn = DBConnection.createConnection();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            Statement stmt = dbConn.createStatement();
+            
+            String dbType = Constants.dbType;
+            String beginQuery = "";
+            
+            if(dbType.equals("MYSQL"))
+            {
+            	beginQuery = "SELECT SUM( calories ) as `calories` , SUM( proteins ) as `proteins` , SUM( carbs ) as `carbs` , SUM( fat ) as `fat` FROM `meals` ";
+            }
+            else if(dbType.equals("POSTGRES"))
+            {
+            	beginQuery = "SELECT SUM( calories ) , SUM( proteins ) , SUM( carbs ) , SUM( fat ) FROM public.meals ";
+            }
+            
+            String query = beginQuery+ " where DATE(date) = DATE('" + date+ "') ";
+            
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+            	
+            	calories = rs.getFloat("calories");
+            	proteins = rs.getFloat("proteins");
+            	carbs = rs.getFloat("carbs");
+            	fat = rs.getFloat("fat");      	
+            }
+            
+            
+        } catch (SQLException sqle) {
+            throw sqle;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            if (dbConn != null) {
+                dbConn.close();
+            }
+            throw e;
+        } finally {
+            if (dbConn != null) {
+                dbConn.close();
+            }
+        }
+        
+        JsonObject object = new JsonObject();
+        object.addProperty("proteins", proteins);
+        object.addProperty("carbs", carbs);
+        object.addProperty("fat", fat);
+        object.addProperty("calories", calories);
+		
+		return object.toString();
 	}
 	
 	
