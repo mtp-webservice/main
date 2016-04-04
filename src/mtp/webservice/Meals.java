@@ -21,6 +21,13 @@ import model.Product;
 public class Meals {
 	
 	@GET
+	@Path("/test")
+	@Produces(MediaType.APPLICATION_JSON) 
+	public String testService(){
+		return "OK";
+	}
+	
+	@GET
 	@Path("/getmeals")
 	@Produces(MediaType.APPLICATION_JSON) 
 	public String getMeals(@QueryParam("date") String date) throws SQLException{
