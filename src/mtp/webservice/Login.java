@@ -17,9 +17,10 @@ public class Login {
     // Query parameters are parameters: http://localhost/<appln-folder-name>/login/dologin?username=abc&password=xyz
     public String doLogin(@QueryParam("username") String uname, @QueryParam("password") String pwd){
         String response = "";
+        int userId = checkCredentials(uname, pwd);
              
-        if(checkCredentials(uname, pwd)){
-        	BaseJsonResponse obj = new BaseJsonResponse("login",true);
+        if(userId > 0){
+        	BaseJsonResponse obj = new BaseJsonResponse("login",true,userId);
             response = obj.toJson();
         }else{
         	BaseJsonResponse obj = new BaseJsonResponse("login", false, "B³êdny adres e-mail lub has³o");
@@ -35,9 +36,9 @@ public class Login {
      * @param pwd
      * @return
      */
-    private boolean checkCredentials(String uname, String pwd){
+    private int checkCredentials(String uname, String pwd){
         System.out.println("Inside checkCredentials");
-        boolean result = false;
+        int result;
         if(Utility.isNotNull(uname) && Utility.isNotNull(pwd)){
             try {
                 result = DBConnection.checkLogin(uname, pwd);
@@ -45,11 +46,11 @@ public class Login {
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 //System.out.println("Inside checkCredentials catch");
-                result = false;
+                result = 0;
             }
         }else{
             //System.out.println("Inside checkCredentials else");
-            result = false;
+            result = 0;
         }
  
         return result;

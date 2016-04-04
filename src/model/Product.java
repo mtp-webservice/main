@@ -12,9 +12,10 @@ public class Product {
 	    private int fat;
 	    private int calories;
 	    private int factor;
+	    private int userId;
 
 	    public Product(int id, int meal, String name, int amount, String unit,
-	    		int proteins, int carbs, int fat, int calories, int factor)
+	    		int proteins, int carbs, int fat, int calories, int factor, int userId)
 	    {
 	        this.id = id;
 	        this.meal = meal;
@@ -26,6 +27,7 @@ public class Product {
 	        this.carbs = carbs;
 	        this.proteins = proteins;
 	        this.factor = factor;
+	        this.userId = userId;
 	    }
 
 	    public Product() {
@@ -115,6 +117,16 @@ public class Product {
 		public void setFactor(int factor) {
 			this.factor = factor;
 		}
+
+		public int getUserId() {
+			return userId;
+		}
+
+		public void setUserId(int userId) {
+			this.userId = userId;
+		}
+		
+		
 		
 		
 	    

@@ -7,6 +7,7 @@ public class BaseJsonResponse {
 	private String tag;
 	private boolean status;
 	private String error_msg;
+	private int userId;
 	
 	public BaseJsonResponse(String tag, boolean status, String error_msg)
 	{
@@ -18,6 +19,13 @@ public class BaseJsonResponse {
 	public BaseJsonResponse()
 	{
 		
+	}
+	
+	public BaseJsonResponse(String tag, boolean status, int userId )
+	{
+		this.tag = tag;
+		this.status = status;
+		this.userId = userId;
 	}
 	
 	public BaseJsonResponse(String tag, boolean status)

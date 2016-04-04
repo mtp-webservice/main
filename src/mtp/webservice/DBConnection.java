@@ -54,8 +54,10 @@ public class DBConnection {
      * @return
      * @throws Exception
      */
-    public static boolean checkLogin(String uname, String pwd) throws Exception {
+    public static int checkLogin(String uname, String pwd) throws Exception {
         boolean isUserAvailable = false;
+        int userId = 0;
+        
         Connection dbConn = null;
         try {
             try {
@@ -83,6 +85,7 @@ public class DBConnection {
             //System.out.println(query);
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
+            	userId = rs.getInt("id");
                 //System.out.println(rs.getString(1) + rs.getString(2) + rs.getString(3));
                 isUserAvailable = true;
             }
@@ -99,7 +102,7 @@ public class DBConnection {
                 dbConn.close();
             }
         }
-        return isUserAvailable;
+        return userId;
     }
     /**
      * Method to insert username and pwd in DB

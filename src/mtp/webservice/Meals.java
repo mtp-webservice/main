@@ -23,7 +23,7 @@ public class Meals {
 	@GET
 	@Path("/getmeals")
 	@Produces(MediaType.APPLICATION_JSON) 
-	public String getMeals(@QueryParam("date") String date) throws SQLException{
+	public String getMeals(@QueryParam("date") String date, @QueryParam("userId") int userId) throws SQLException{
 		
 		Connection dbConn = null;
 		ArrayList<Product> foodList = new ArrayList<Product>();
@@ -50,7 +50,7 @@ public class Meals {
             	beginQuery = "SELECT * FROM public.meals ";
             }
             
-            String query = beginQuery+ " where DATE(date) = DATE('" + date+ "') ";
+            String query = beginQuery+ " where DATE(date) = DATE('" + date+ "') and userid = "+userId;
             
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
@@ -62,6 +62,7 @@ public class Meals {
             	food.setAmount(rs.getInt("amount"));
             	food.setUnit(rs.getString("unit"));
             	food.setCalories(rs.getInt("calories"));
+            	food.setUserId(rs.getInt("userId"));
             	
             	foodList.add(food);
             }
@@ -89,7 +90,7 @@ public class Meals {
 	@GET
 	@Path("/getsummary")
 	@Produces(MediaType.APPLICATION_JSON) 
-	public String getSummary(@QueryParam("date") String date) throws SQLException{
+	public String getSummary(@QueryParam("date") String date, @QueryParam("userId") int userId) throws SQLException{
 		
 		Connection dbConn = null;
 		float calories = 0,carbs = 0,proteins = 0,fat = 0;
@@ -117,7 +118,7 @@ public class Meals {
             	beginQuery = "SELECT SUM( calories ) , SUM( proteins ) , SUM( carbs ) , SUM( fat ) FROM public.meals ";
             }
             
-            String query = beginQuery+ " where DATE(date) = DATE('" + date+ "') ";
+            String query = beginQuery+ " where DATE(date) = DATE('" + date+ "') and userId =" + userId;
             
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
@@ -160,7 +161,7 @@ public class Meals {
 			@QueryParam("amount") float amount, @QueryParam("calories") float calories,
 			@QueryParam("fat") float fat, @QueryParam("carbs") float carbs,
 			@QueryParam("proteins") float proteins, @QueryParam("date") String date,
-			@QueryParam("unit") String unit, @QueryParam("productName") String productName) throws SQLException{
+			@QueryParam("unit") String unit, @QueryParam("productName") String productName, @QueryParam("userId") int userId) throws SQLException{
 		
 		Connection dbConn = null;
 		Gson gson = new Gson();
@@ -180,7 +181,7 @@ public class Meals {
             
             if(dbType.equals("MYSQL"))
             {
-            	beginQuery = "insert into meals(meal,name,productId,proteins,carbs,fat,calories,amount,unit,date) ";
+            	beginQuery = "insert into meals(meal,name,productId,proteins,carbs,fat,calories,amount,unit,date,userId) ";
             }
             else if(dbType.equals("POSTGRES"))
             {
@@ -188,7 +189,7 @@ public class Meals {
             }
             
             String query = beginQuery+ " values("+mealId+",'"+productName+"',"+productId
-            		+","+proteins+","+carbs+","+fat+","+calories+","+amount+",'"+unit+"','"+date+"')";
+            		+","+proteins+","+carbs+","+fat+","+calories+","+amount+",'"+unit+"','"+date+"',"+userId+")";
             
             int result = stmt.executeUpdate(query);
             if (result > 0)
