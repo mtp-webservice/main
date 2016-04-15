@@ -27,7 +27,7 @@ public class Training {
 	@GET
 	@Path("/gettraining")
 	@Produces(MediaType.APPLICATION_JSON) 
-	public String getMeals(@QueryParam("date") String date, @QueryParam("userId") int userId) throws SQLException{
+	public String getTraining(@QueryParam("date") String date, @QueryParam("userId") int userId) throws SQLException{
 		
 		Connection dbConn = null;
 		ArrayList<ExerciseSet> exercises = new ArrayList<ExerciseSet>();
