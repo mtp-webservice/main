@@ -19,6 +19,44 @@ import model.Measure;
 @Path("/stats")
 public class Statistics {
 	
+	
+	@GET
+	@Path("/savebodymeasures")
+	@Produces(MediaType.APPLICATION_JSON) 
+	public String addTraining(@QueryParam("weight") float weight, @QueryParam("bicep") float bicep, 
+						@QueryParam("chest") float chest, @QueryParam("waist") float waist,
+						@QueryParam("thigh") float thigh,@QueryParam("date") String date,
+						@QueryParam("userId") int userId) throws SQLException{
+		
+		Connection dbConn = null;
+		Gson gson = new Gson();
+		
+		 try {
+	            try {
+	                dbConn = DBConnection.createConnection();
+	            } catch (Exception e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            }
+	            Statement stmt = dbConn.createStatement();
+		
+        return gson.toJson("");
+        
+        } catch (SQLException sqle) {
+            throw sqle;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            if (dbConn != null) {
+                dbConn.close();
+            }
+            throw e;
+        } finally {
+            if (dbConn != null) {
+                dbConn.close();
+            } 
+        }
+	}
+	
 	@GET
     @Path("/getcurrent")  
     @Produces(MediaType.APPLICATION_JSON) 
