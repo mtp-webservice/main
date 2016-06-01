@@ -1,11 +1,11 @@
 package model;
 
 public class Measure {
-    public String getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(int value) {
         this.value = value;
     }
 
@@ -41,24 +41,33 @@ public class Measure {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	
+    public String getUnit() {
+        return unit;
+    }
 
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
 
 	private String name;
-    private String value;
+    private int value;
     private int typeId;
     private int groupId;
     private String date;
+    private String unit;
 
     public Measure(){
     	
     }
     
-    public Measure(int typeId, String name, String value)
+    public Measure(int typeId, String name, int value)
     {
         this.typeId = typeId;
         this.name = name;
         this.value = value;
     }
+
 
 }

@@ -13,4 +13,14 @@ public class Constants {
     
     public static String dbType = "MYSQL";
     
+    public static String unitCm = "cm";
+    public static String unitKg = "kg";
+    public static String unitPercent = "%";
+    
+    public static String measureWeight = "Waga";
+    public static String measureBicep = "Obwód bicepsa";
+    public static String measureChest = "Obwód klatki piersiowej";
+    public static String measureWaist = "Obwód pasa";
+    public static String measureThigh = "Obwód uda";
+    
 }
