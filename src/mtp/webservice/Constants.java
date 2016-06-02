@@ -23,4 +23,10 @@ public class Constants {
     public static String measureWaist = "Obwód pasa";
     public static String measureThigh = "Obwód uda";
     
+    public static String measureBenchPress = "Wyciskanie sztangi poziomo";
+    public static String measureBarbellRow = "Wios³owanie";
+    public static String measureBarbellCurls = "Uginanie ramion ze sztang¹";
+    public static String measureDips = "Pompki na porêczach";
+    public static String measureSquats = "Przysiady";
+    
 }

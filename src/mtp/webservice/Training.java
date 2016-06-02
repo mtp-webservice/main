@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -131,6 +133,12 @@ public class Training {
             	beginQuery = "INSERT INTO public.trainings ";
             }
             
+            ExerciseSet max1 = Collections.max(ex1List, new WeightComp());    
+            ExerciseSet max2 = Collections.max(ex2List, new WeightComp()); 
+            ExerciseSet max3 = Collections.max(ex3List, new WeightComp()); 
+            ExerciseSet max4 = Collections.max(ex4List, new WeightComp()); 
+            ExerciseSet max5 = Collections.max(ex5List, new WeightComp()); 
+            
             for(ExerciseSet el : ex1List){ 
                 String query = beginQuery+ " values('"+date+"',"+userId+",1,"+el.getSetNo()+","+el.getReps()+","+el.getWeight()+",'')";            
                 int result = stmt.executeUpdate(query);
@@ -158,6 +166,37 @@ public class Training {
                 	response = "{\"result\": \"true\"}";
             }
             
+            
+            // insert max to measures 
+            
+            String maxQuery = "insert into measures(userId, groupId, date, typeId, name, value, unit) values("+
+            userId+",2,"+"'"+date+"'";
+            
+            // insert max1
+            
+            String max1Query = maxQuery +","+7+",'"+Constants.measureSquats+"',"+max1.getWeight()+",'"+Constants.unitKg+"')";
+            stmt.executeUpdate(max1Query);
+            
+            // insert max2
+            
+            String max2Query = maxQuery +","+8+",'"+Constants.measureBenchPress+"',"+max2.getWeight()+",'"+Constants.unitKg+"')";
+            stmt.executeUpdate(max2Query);
+            
+            // insert max3
+            
+            String max3Query = maxQuery +","+9+",'"+Constants.measureBarbellRow+"',"+max3.getWeight()+",'"+Constants.unitKg+"')";
+            stmt.executeUpdate(max3Query);
+            
+            // insert max4
+            
+            String max4Query = maxQuery +","+10+",'"+Constants.measureBarbellCurls+"',"+max4.getWeight()+",'"+Constants.unitKg+"')";
+            stmt.executeUpdate(max4Query);
+            
+            // insert max5
+            
+            String max5Query = maxQuery +","+11+",'"+Constants.measureDips+"',"+max5.getWeight()+",'"+Constants.unitKg+"')";
+            stmt.executeUpdate(max5Query);
+            
             return gson.toJson(response);
             
         } catch (SQLException sqle) {
@@ -175,5 +214,14 @@ public class Training {
         }
 		
 	}
-
+	
+	class WeightComp implements Comparator<ExerciseSet>{
+		 
+	    @Override
+	    public int compare(ExerciseSet e1, ExerciseSet e2) {
+	        return ((Integer)e1.getWeight()).compareTo(e2.getWeight());
+	    }
+	}
+	 
+	
 }
