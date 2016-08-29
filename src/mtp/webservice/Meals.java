@@ -28,6 +28,137 @@ public class Meals {
 	}
 	
 	@GET
+	@Path("/getmealsheaders")
+	@Produces(MediaType.APPLICATION_JSON) 
+	public String getMealsHeaders(@QueryParam("date") String date, @QueryParam("userId") int userId) throws SQLException{
+		
+		Connection dbConn = null;
+		Gson gson = new Gson();
+		int[] caloriesArray = new int[5];
+		
+		caloriesArray[0] = 0;
+		caloriesArray[1] = 0;
+		caloriesArray[2] = 0;
+		caloriesArray[3] = 0;
+		caloriesArray[4] = 0;
+		
+        try {
+            try {
+                dbConn = DBConnection.createConnection();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            Statement stmt = dbConn.createStatement();
+            
+            String dbType = Constants.dbType;
+            String beginQuery = "";
+            
+            if(dbType.equals("MYSQL"))
+            {
+            	beginQuery = "SELECT meal, SUM(calories) as `suma` FROM `meals` ";
+            }
+            else if(dbType.equals("POSTGRES"))
+            {
+            	beginQuery = "SELECT * FROM public.meals ";
+            }
+            
+            String query = beginQuery+ " where DATE(date) = DATE('" + date+ "') and userid = "+userId+" GROUP BY meal";
+            
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+            	
+            	int meal = rs.getInt("meal");
+            	int calories = rs.getInt("suma");
+            	
+            	caloriesArray[meal-1] = calories;		
+            }
+            
+            
+        } catch (SQLException sqle) {
+            throw sqle;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            if (dbConn != null) {
+                dbConn.close();
+            }
+            throw e;
+        } finally {
+            if (dbConn != null) {
+                dbConn.close();
+            }
+        }
+		
+		return gson.toJson(caloriesArray);
+	}
+	
+	@GET
+	@Path("/getproductsformeal")
+	@Produces(MediaType.APPLICATION_JSON) 
+	public String getProductsForMeal(@QueryParam("date") String date, @QueryParam("userId") int userId, @QueryParam("mealId") int mealId) throws SQLException{
+		
+		Connection dbConn = null;
+		ArrayList<Product> products = new ArrayList<Product>();
+		Gson gson = new Gson();
+		int meal = mealId + 1;
+		
+        try {
+            try {
+                dbConn = DBConnection.createConnection();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            Statement stmt = dbConn.createStatement();
+            
+            String dbType = Constants.dbType;
+            String beginQuery = "";
+            
+            if(dbType.equals("MYSQL"))
+            {
+            	beginQuery = "SELECT * FROM `meals` ";
+            }
+            else if(dbType.equals("POSTGRES"))
+            {
+            	beginQuery = "SELECT * FROM public.meals ";
+            }
+            
+            String query = beginQuery+ " where DATE(date) = DATE('" + date+ "') and userid = "+userId+" and meal="+meal;
+            
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+            	
+            	Product food = new Product();
+            	food.setId(rs.getInt("id"));
+            	food.setName(rs.getString("name"));
+            	food.setMeal(rs.getInt("meal"));
+            	food.setAmount(rs.getInt("amount"));
+            	food.setUnit(rs.getString("unit"));
+            	food.setCalories(rs.getInt("calories"));
+            	food.setUserId(rs.getInt("userId"));
+            	
+            	products.add(food);
+            }
+            
+            
+        } catch (SQLException sqle) {
+            throw sqle;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            if (dbConn != null) {
+                dbConn.close();
+            }
+            throw e;
+        } finally {
+            if (dbConn != null) {
+                dbConn.close();
+            }
+        }
+		
+		return gson.toJson(products);
+	}
+	
+	@GET
 	@Path("/getmeals")
 	@Produces(MediaType.APPLICATION_JSON) 
 	public String getMeals(@QueryParam("date") String date, @QueryParam("userId") int userId) throws SQLException{
