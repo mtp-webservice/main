@@ -89,6 +89,69 @@ public class Statistics {
 			return gson.toJson(measureList); 
 	 }
 	
+	@GET
+    @Path("/getprevioustrainingchart")  
+    @Produces(MediaType.APPLICATION_JSON) 
+	 public String getPreviousTraningChart(@QueryParam("userId") int userId, @QueryParam("exerciseId") int exerciseId, @QueryParam("date") String date) throws SQLException{
+    	
+		Connection dbConn = null;
+		ArrayList<Measure> measureList = new ArrayList<Measure>();
+		Gson gson = new Gson();
+		
+		   try {
+	            try {
+	                dbConn = DBConnection.createConnection();
+	            } catch (Exception e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            }
+	            Statement stmt = dbConn.createStatement();
+	            
+	            String dbType = Constants.dbType;
+	            String beginQuery = "";
+	            
+	            if(dbType.equals("MYSQL"))
+	            {
+	            	beginQuery = "SELECT * FROM `trainings` ";
+	            }
+	            else if(dbType.equals("POSTGRES"))
+	            {
+	            	beginQuery = "SELECT * FROM public.trainings ";
+	            }
+	            
+	            int id = exerciseId +1;
+	            
+	            String query = beginQuery+ "WHERE date < '"+date+"' and exerciseId="+id+" ORDER BY date desc LIMIT 5";
+	            
+	            SimpleDateFormat dt1 = new SimpleDateFormat("dd.MM");
+	            
+	            ResultSet rs = stmt.executeQuery(query);
+	            while (rs.next()) {
+	            	
+	            	Measure measure = new Measure();
+	            	measure.setGroupId(rs.getInt("setNo"));
+	            	measure.setValue(rs.getInt("weight"));
+	                measureList.add(measure);
+	            }
+	            
+	            
+	        } catch (SQLException sqle) {
+	            throw sqle;
+	        } catch (Exception e) {
+	            // TODO Auto-generated catch block
+	            if (dbConn != null) {
+	                dbConn.close();
+	            }
+	            throw e;
+	        } finally {
+	            if (dbConn != null) {
+	                dbConn.close();
+	            }
+	        }
+
+			return gson.toJson(measureList); 
+	 }
+	
 	
 	@GET
 	@Path("/savebodymeasures")
