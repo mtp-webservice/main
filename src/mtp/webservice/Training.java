@@ -69,9 +69,25 @@ public class Training {
             	exercise.setSetNo(rs.getInt("setNo"));
             	exercise.setWeight(rs.getInt("weight"));
             	exercise.setUserId(rs.getInt("userId"));
+            	exercise.setTrainingSetId(rs.getInt("trainingSetId"));
             	
             	exercises.add(exercise);
             }
+            
+            if(exercises.size() == 0){
+            	String query2 = "SELECT * FROM `trainings` where DATE(date) < DATE('" + date+ "') ORDER BY DATE DESC LIMIT 1";
+            	ResultSet rs2 = stmt.executeQuery(query2);
+            	
+            	 while (rs2.next()) {
+            		 ExerciseSet exercise = new ExerciseSet();
+            		 exercise.setTrainingSetId(rs2.getInt("trainingSetId"));
+            		 exercises.add(exercise);
+                 }
+            	 
+            	 if(exercises.size() > 0)
+            		 return ""+exercises.get(0).getTrainingSetId();
+            }
+            
             
             
         } catch (SQLException sqle) {
@@ -88,6 +104,7 @@ public class Training {
             }
         }
         
+        
         return gson.toJson(exercises);
 	}
 	
@@ -97,7 +114,7 @@ public class Training {
 	@Produces(MediaType.APPLICATION_JSON) 
 	public String addTraining(@QueryParam("ex1") String ex1, @QueryParam("ex2") String ex2, 
 						@QueryParam("ex3") String ex3,@QueryParam("ex4") String ex4,
-						@QueryParam("ex5") String ex5,@QueryParam("date") String date,
+						@QueryParam("ex5") String ex5, @QueryParam("ex5") String ex6, @QueryParam("date") String date,
 						@QueryParam("userId") int userId) throws SQLException{
 		
 		Connection dbConn = null;
@@ -109,6 +126,7 @@ public class Training {
 		List<ExerciseSet> ex3List = gson.fromJson(ex3, listOfTestObject);
 		List<ExerciseSet> ex4List = gson.fromJson(ex4, listOfTestObject);
 		List<ExerciseSet> ex5List = gson.fromJson(ex5, listOfTestObject);
+		List<ExerciseSet> ex6List = gson.fromJson(ex6, listOfTestObject);
 		
 		String response = "{\"result\": \"false\"}";
 		
@@ -126,7 +144,7 @@ public class Training {
             
             if(dbType.equals("MYSQL"))
             {
-            	beginQuery = "insert into trainings(date,userId,exerciseId,setNo,reps,weight,name) ";
+            	beginQuery = "insert into trainings(date,userId,exerciseId,setNo,reps,weight,name,trainingSetId) ";
             }
             else if(dbType.equals("POSTGRES"))
             {
@@ -138,29 +156,35 @@ public class Training {
             ExerciseSet max3 = Collections.max(ex3List, new WeightComp()); 
             ExerciseSet max4 = Collections.max(ex4List, new WeightComp()); 
             ExerciseSet max5 = Collections.max(ex5List, new WeightComp()); 
+            ExerciseSet max6 = Collections.max(ex6List, new WeightComp()); 
             
             for(ExerciseSet el : ex1List){ 
-                String query = beginQuery+ " values('"+date+"',"+userId+",1,"+el.getSetNo()+","+el.getReps()+","+el.getWeight()+",'')";            
+                String query = beginQuery+ " values('"+date+"',"+userId+",1,"+el.getSetNo()+","+el.getReps()+","+el.getWeight()+",'',"+el.getTrainingSetId()+")";            
                 int result = stmt.executeUpdate(query);
             }
             
             for(ExerciseSet el : ex2List){ 
-                String query = beginQuery+ " values('"+date+"',"+userId+",2,"+el.getSetNo()+","+el.getReps()+","+el.getWeight()+",'')";            
+                String query = beginQuery+ " values('"+date+"',"+userId+",2,"+el.getSetNo()+","+el.getReps()+","+el.getWeight()+",'',"+el.getTrainingSetId()+")";            
                 int result = stmt.executeUpdate(query);
             }
             
             for(ExerciseSet el : ex3List){ 
-                String query = beginQuery+ " values('"+date+"',"+userId+",3,"+el.getSetNo()+","+el.getReps()+","+el.getWeight()+",'')";            
+                String query = beginQuery+ " values('"+date+"',"+userId+",3,"+el.getSetNo()+","+el.getReps()+","+el.getWeight()+",'',"+el.getTrainingSetId()+")";          
                 int result = stmt.executeUpdate(query);
             }
             
             for(ExerciseSet el : ex4List){ 
-                String query = beginQuery+ " values('"+date+"',"+userId+",4,"+el.getSetNo()+","+el.getReps()+","+el.getWeight()+",'')";            
+                String query = beginQuery+ " values('"+date+"',"+userId+",4,"+el.getSetNo()+","+el.getReps()+","+el.getWeight()+",'',"+el.getTrainingSetId()+")";           
                 int result = stmt.executeUpdate(query);
             }
             
             for(ExerciseSet el : ex5List){ 
-                String query = beginQuery+ " values('"+date+"',"+userId+",5,"+el.getSetNo()+","+el.getReps()+","+el.getWeight()+",'')";            
+                String query = beginQuery+ " values('"+date+"',"+userId+",5,"+el.getSetNo()+","+el.getReps()+","+el.getWeight()+",'',"+el.getTrainingSetId()+")";           
+                int result = stmt.executeUpdate(query);
+            }
+            
+            for(ExerciseSet el : ex6List){ 
+                String query = beginQuery+ " values('"+date+"',"+userId+",6,"+el.getSetNo()+","+el.getReps()+","+el.getWeight()+",'',"+el.getTrainingSetId()+")";            
                 int result = stmt.executeUpdate(query);
                 if (result > 0)
                 	response = "{\"result\": \"true\"}";
@@ -196,6 +220,11 @@ public class Training {
             
             String max5Query = maxQuery +","+11+",'"+Constants.measureDips+"',"+max5.getWeight()+",'"+Constants.unitKg+"')";
             stmt.executeUpdate(max5Query);
+            
+            // insert max5
+            
+            String max6Query = maxQuery +","+11+",'"+Constants.measureDips+"',"+max6.getWeight()+",'"+Constants.unitKg+"')";
+            stmt.executeUpdate(max6Query);
             
             return gson.toJson(response);
             

@@ -8,7 +8,7 @@ public class ExerciseSet {
 	    }
 
 	    public ExerciseSet(int id, int weight, int reps, int setNo, String exerciseName, int exerciseId,
-	    		int userId, Date date) {
+	    		int userId, Date date, int trainingSetId) {
 	        this.id = id;
 	        this.weight = weight;
 	        this.reps = reps;
@@ -17,6 +17,7 @@ public class ExerciseSet {
 	        this.exerciseId = exerciseId;
 	        this.userId = userId;
 	        this.date = date;
+	        this.trainingSetId = trainingSetId;
 	    }
 
 	    private int id;
@@ -27,6 +28,7 @@ public class ExerciseSet {
 	    private int setNo;
 	    private int userId;
 	    private Date date;
+	    private int trainingSetId;
 
 	    public String getExerciseName() {
 	        return exerciseName;
@@ -91,4 +93,12 @@ public class ExerciseSet {
 		public void setDate(Date date) {
 			this.date = date;
 		} 
+		
+		public void setTrainingSetId(int trainingSetId){
+			this.trainingSetId = trainingSetId;
+		}
+		
+		public int getTrainingSetId(){
+			return trainingSetId;
+		}
 }
