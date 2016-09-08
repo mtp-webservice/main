@@ -114,7 +114,7 @@ public class Training {
 	@Produces(MediaType.APPLICATION_JSON) 
 	public String addTraining(@QueryParam("ex1") String ex1, @QueryParam("ex2") String ex2, 
 						@QueryParam("ex3") String ex3,@QueryParam("ex4") String ex4,
-						@QueryParam("ex5") String ex5, @QueryParam("ex5") String ex6, @QueryParam("date") String date,
+						@QueryParam("ex5") String ex5, @QueryParam("ex6") String ex6, @QueryParam("date") String date,
 						@QueryParam("userId") int userId) throws SQLException{
 		
 		Connection dbConn = null;
@@ -196,34 +196,54 @@ public class Training {
             String maxQuery = "insert into measures(userId, groupId, date, typeId, name, value, unit) values("+
             userId+",2,"+"'"+date+"'";
             
+            int startIndex = 0;
+            int trainingSetId = ex1List.get(0).getTrainingSetId();
+            
+            switch (trainingSetId) {
+            case 1:
+            	startIndex = 7;
+              break;
+         
+            case 2:
+            	startIndex = 13;
+              break;
+         
+            case 3:
+            	startIndex = 19;
+                break;
+              
+            default:
+              break;
+          }
+            
             // insert max1
             
-            String max1Query = maxQuery +","+7+",'"+Constants.measureSquats+"',"+max1.getWeight()+",'"+Constants.unitKg+"')";
+            String max1Query = maxQuery +","+startIndex++ +",'',"+max1.getWeight()+",'"+Constants.unitKg+"')";
             stmt.executeUpdate(max1Query);
             
             // insert max2
             
-            String max2Query = maxQuery +","+8+",'"+Constants.measureBenchPress+"',"+max2.getWeight()+",'"+Constants.unitKg+"')";
+            String max2Query = maxQuery +","+startIndex++ +",'',"+max2.getWeight()+",'"+Constants.unitKg+"')";
             stmt.executeUpdate(max2Query);
             
             // insert max3
             
-            String max3Query = maxQuery +","+9+",'"+Constants.measureBarbellRow+"',"+max3.getWeight()+",'"+Constants.unitKg+"')";
+            String max3Query = maxQuery +","+startIndex++ +",'',"+max3.getWeight()+",'"+Constants.unitKg+"')";
             stmt.executeUpdate(max3Query);
             
             // insert max4
             
-            String max4Query = maxQuery +","+10+",'"+Constants.measureBarbellCurls+"',"+max4.getWeight()+",'"+Constants.unitKg+"')";
+            String max4Query = maxQuery +","+startIndex++ +",'',"+max4.getWeight()+",'"+Constants.unitKg+"')";
             stmt.executeUpdate(max4Query);
             
             // insert max5
             
-            String max5Query = maxQuery +","+11+",'"+Constants.measureDips+"',"+max5.getWeight()+",'"+Constants.unitKg+"')";
+            String max5Query = maxQuery +","+startIndex++ +",'',"+max5.getWeight()+",'"+Constants.unitKg+"')";
             stmt.executeUpdate(max5Query);
             
-            // insert max5
+            // insert max6
             
-            String max6Query = maxQuery +","+11+",'"+Constants.measureDips+"',"+max6.getWeight()+",'"+Constants.unitKg+"')";
+            String max6Query = maxQuery +","+startIndex++ + ",'',"+max6.getWeight()+",'"+Constants.unitKg+"')";
             stmt.executeUpdate(max6Query);
             
             return gson.toJson(response);
