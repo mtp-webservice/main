@@ -137,8 +137,7 @@ public class DBConnection {
 				beginQuery = "INSERT into user";
 			}
                          
-            String query = beginQuery+"(name, username, password) values('"+name+ "',"+"'"
-                    + uname + "','" + pwd + "')";
+            String query = beginQuery+"(name, username, password) values('"+name+ "',"+"'"+ uname + "','" + pwd + "')";
             System.out.println(query);
             int records = stmt.executeUpdate(query);
             //System.out.println(records);
