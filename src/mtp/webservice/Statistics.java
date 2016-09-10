@@ -53,7 +53,7 @@ public class Statistics {
 	            	beginQuery = "SELECT * FROM public.measures ";
 	            }
 	            
-	            String query = beginQuery+ " where userId ="+userId+" and typeId ="+ typeId+ " order by date asc "
+	            String query = beginQuery+ " where userId ="+userId+" and typeId ="+ typeId+ " order by date desc "
 	            		+ " limit 10";
 	            
 	            SimpleDateFormat dt1 = new SimpleDateFormat("dd.MM");
@@ -158,7 +158,7 @@ public class Statistics {
 	@Produces(MediaType.APPLICATION_JSON) 
 	public String saveBodyMeasures(@QueryParam("weight") float weight, @QueryParam("bicep") float bicep, 
 						@QueryParam("chest") float chest, @QueryParam("waist") float waist,
-						@QueryParam("thigh") float thigh,
+						@QueryParam("thigh") float thigh, @QueryParam("neck") float neck, @QueryParam("bodyFat") float bodyFat,
 						@QueryParam("userId") int userId) throws SQLException{
 		
 		Connection dbConn = null;
@@ -187,7 +187,7 @@ public class Statistics {
 	    
 	    // bicep
 	    
-	    cStmt.setInt(1, 3);
+	    cStmt.setInt(1, 2);
 	    cStmt.setFloat(2, bicep);
 	    cStmt.setInt(3, userId);
 	    cStmt.setString(4, Constants.measureBicep);
@@ -197,7 +197,7 @@ public class Statistics {
 	    
 	    // chest
 	    
-	    cStmt.setInt(1, 4);
+	    cStmt.setInt(1, 3);
 	    cStmt.setFloat(2, chest);
 	    cStmt.setInt(3, userId);
 	    cStmt.setString(4, Constants.measureChest);
@@ -207,7 +207,7 @@ public class Statistics {
 	    
 	    // waist 
 	    
-	    cStmt.setInt(1, 5);
+	    cStmt.setInt(1, 4);
 	    cStmt.setFloat(2, waist);
 	    cStmt.setInt(3, userId);
 	    cStmt.setString(4, Constants.measureWaist);
@@ -217,11 +217,28 @@ public class Statistics {
 	 
 	    // thigh
 	    
-	    cStmt.setInt(1, 6);
+	    cStmt.setInt(1, 5);
 	    cStmt.setFloat(2, thigh);
 	    cStmt.setInt(3, userId);
 	    cStmt.setString(4, Constants.measureThigh);
 	    cStmt.setString(5, Constants.unitCm);
+	    
+	    
+	    // neck
+	    
+	    cStmt.setInt(1, 6);
+	    cStmt.setFloat(2, neck);
+	    cStmt.setInt(3, userId);
+	    cStmt.setString(4, Constants.measureNeck);
+	    cStmt.setString(5, Constants.unitCm);
+	    
+	    // body fat
+	    
+	    cStmt.setInt(1, 7);
+	    cStmt.setFloat(2, bodyFat);
+	    cStmt.setInt(3, userId);
+	    cStmt.setString(4, Constants.measureBodyFat);
+	    cStmt.setString(5, Constants.unitPercent);
 	    
 	    cStmt.execute();
 		

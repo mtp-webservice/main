@@ -201,15 +201,15 @@ public class Training {
             
             switch (trainingSetId) {
             case 1:
-            	startIndex = 7;
+            	startIndex = 8;
               break;
          
             case 2:
-            	startIndex = 13;
+            	startIndex = 14;
               break;
          
             case 3:
-            	startIndex = 19;
+            	startIndex = 20;
                 break;
               
             default:
