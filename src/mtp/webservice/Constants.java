@@ -28,7 +28,7 @@ public class Constants {
     public static String measureWaist = "Obwód pasa";
     public static String measureThigh = "Obwód uda";
     public static String measureNeck = "Obwód szyi";
-    public static String measureBodyFat = "Poziom tkanki t³usczowej";
+    public static String measureBodyFat = "Poziom tkanki tlusczowej";
     
     public static String measureBenchPress = "Wyciskanie sztangi poziomo";
     public static String measureBarbellRow = "Wios³owanie";
