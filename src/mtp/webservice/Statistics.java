@@ -223,6 +223,7 @@ public class Statistics {
 	    cStmt.setString(4, Constants.measureThigh);
 	    cStmt.setString(5, Constants.unitCm);
 	    
+	    cStmt.execute();
 	    
 	    // neck
 	    
@@ -231,6 +232,8 @@ public class Statistics {
 	    cStmt.setInt(3, userId);
 	    cStmt.setString(4, Constants.measureNeck);
 	    cStmt.setString(5, Constants.unitCm);
+	    
+	    cStmt.execute();
 	    
 	    // body fat
 	    

@@ -2,15 +2,15 @@ package mtp.webservice;
 
 public class Constants {
 	public static String dbClass = "com.mysql.jdbc.Driver";
-	//private static String dbName= "androidmtp";
-	//public static String dbUrl = "jdbc:mysql://node33581-mtpandroid.unicloud.pl/"+dbName+"?useUnicode=yes&characterEncoding=UTF-8";
-	//public static String dbUser = "luke";
-    //public static String dbPwd = "123123";
+	private static String dbName= "androidmtp";
+	public static String dbUrl = "jdbc:mysql://node33581-mtpandroid.unicloud.pl/"+dbName+"?useUnicode=yes&characterEncoding=UTF-8";
+	public static String dbUser = "luke";
+    public static String dbPwd = "123123";
 	
-	private static String dbName= "db6004191_mtp";
-    public static String dbUrl = "jdbc:mysql://mysql636.cp.az.pl/"+dbName+"?characterEncoding=UTF-8";
-	public static String dbUser = "u6004191_mtp";
-    public static String dbPwd = "]g45dPc<n2o,,aD,";
+	//private static String dbName= "db6004191_mtp";
+    //public static String dbUrl = "jdbc:mysql://mysql636.cp.az.pl/"+dbName+"?characterEncoding=UTF-8";
+	//public static String dbUser = "u6004191_mtp";
+    //public static String dbPwd = "]g45dPc<n2o,,aD,";
     
 	public static String dbClassPg = "org.postgresql.Driver";
     public static String dbUserPg = "luke";
