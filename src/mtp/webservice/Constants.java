@@ -34,6 +34,6 @@ public class Constants {
     public static String measureBarbellRow = "Wios³owanie";
     public static String measureBarbellCurls = "Uginanie ramion ze sztang¹";
     public static String measureDips = "Pompki na porêczach";
-    public static String measureSquats = "Przysiady";
+    public static String measureSquats = "Przysiady ";
     
 }
