@@ -3,7 +3,7 @@ package mtp.webservice;
 public class Constants {
 	public static String dbClass = "com.mysql.jdbc.Driver";
 	private static String dbName= "androidmtp";
-	public static String dbUrl = "jdbc:mysql://eu-cdbr-west-01.cleardb.com/heroku_8f609e29676dcdb&characterEncoding=UTF-8";
+	public static String dbUrl = "jdbc:mysql://b9ca0e4a6a1bd9:f70feb74@eu-cdbr-west-01.cleardb.com/heroku_8f609e29676dcdb?reconnect=true?useUnicode=yes&characterEncoding=UTF-8";
 	public static String dbUser = "b9ca0e4a6a1bd9";
     public static String dbPwd = "f70feb74";
 	
