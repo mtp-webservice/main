@@ -64,6 +64,49 @@
   		<artifactId>jettison</artifactId>
   		<version>1.3.8</version>
   	</dependency>
+ <!-- https://mvnrepository.com/artifact/org.eclipse.jetty.websocket/websocket-server -->
+<dependency>
+    <groupId>org.eclipse.jetty.websocket</groupId>
+    <artifactId>websocket-server</artifactId>
+    <version>9.3.11.v20160721</version>
+</dependency>
+  	<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/apache-jstl -->
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>apache-jstl</artifactId>
+    <version>9.3.12.v20160915</version>
+</dependency>
+  	<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/apache-jsp -->
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>apache-jsp</artifactId>
+    <version>9.3.12.v20160915</version>
+</dependency>
+  	<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-jndi -->
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-jndi</artifactId>
+    <version>9.3.12.v20160915</version>
+</dependency>
+  	<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-jaas -->
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-jaas</artifactId>
+    <version>9.3.12.v20160915</version>
+</dependency>
+  	<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-annotations -->
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-annotations</artifactId>
+    <version>9.3.12.v20160915</version>
+</dependency>
+  	<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-plus -->
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-plus</artifactId>
+    <version>9.3.12.v20160915</version>
+</dependency>
+  	
 <dependency>
     <groupId>org.eclipse.jetty</groupId>
     <artifactId>jetty-runner</artifactId>
